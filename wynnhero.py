@@ -78,4 +78,4 @@ async def on_select_option(interaction):
     await interaction.message.edit(embed = profilebuilder.buildClass(response, classCounter), components = profilebuilder.buildComponents(response))
     
 
-bot.run('ODQ0NTEyNzM3NjEwNTYzNTk1.YKTfxg.oiIMgMItG44ZYmrtqc1W2ZW_AKY')
+bot.run('insert token here')
