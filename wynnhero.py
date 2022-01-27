@@ -7,28 +7,33 @@ import management
 
 intents = discord.Intents.default()
 intents.members = True
+adminUsers = [146325558584803328]
 
 # bot = commands.Bot(command_prefix='w>')
 bot = ComponentsBot(command_prefix='w>')
 
+
 @bot.event
 async def on_ready():
-    management.readyDataSetup()
+    management.ready_data_setup()
     print(f'Logged in as {bot.user}!')
 
-@bot.command(brief = 'Shuts the bot down', description = 'Shuts the bot down')
+
+@bot.command(brief='Shuts the bot down', description='Shuts the bot down')
 async def bye(ctx):
-    if ctx.message.author.id != 146325558584803328:
+    if ctx.message.author.id in adminUsers is False:
         return
     await ctx.send('Shutting down.')
     print('Bot shutting down')
     await bot.close()
 
+
 class Wynncraft:
     """Category for Wynncraft Profile Management"""
 
-@bot.command(brief = 'Links Discord and Minecraft', description = 'Links the two accounts.\nname: Name of the Minecraft Account you want to link')
-async def connect(ctx, name = ''):
+
+@bot.command(brief='Links Discord and Minecraft', description='Links the two accounts.\nname: Name of the Minecraft Account you want to link')
+async def connect(ctx, name=''):
     if name == '':
         await ctx.send('Syntax: connect [name]')
         return
@@ -42,11 +47,12 @@ async def connect(ctx, name = ''):
         print(f'Associated \"{name}\" to \"{name}\".')
         await ctx.send('Associated you to Minecraft Account ' + name + '.')
 
-@bot.command(brief = 'Unlink Discord and Minecraft', description = 'Unlinks the linked accounts.')
+
+@bot.command(brief='Unlink Discord and Minecraft', description='Unlinks the linked accounts.')
 async def disconnect(ctx):
     uid = str(ctx.message.author.id)
     sdata = management.load_dict()
-    if uid in sdata == False:
+    if uid in sdata is False:
         await ctx.send('Your Discord Account is not linked to a Minecraft Account.')
         return
     else:
@@ -56,8 +62,9 @@ async def disconnect(ctx):
         print(f'Disassociated \"{name}\" from \"{uid}\".')
         await ctx.send('Disassociated you with Minecraft Account ' + name + '.')
 
-@bot.command(brief = 'Shows selected Wynncraft Profile', description = 'Shows an embed with information about the user and his played classes.\nname: Optional! Name of the profile you want to view. Will show your linked account if empty.')
-async def profile(ctx, name = ''):
+
+@bot.command(brief='Shows selected Wynncraft Profile', description='Shows an embed with information about the user and his played classes.\nname: Optional! Name of the profile you want to view. Will show your linked account if empty.')
+async def profile(ctx, name=''):
     uid = str(ctx.message.author.id)
     if name == '':
         sdata = management.load_dict()
@@ -67,15 +74,16 @@ async def profile(ctx, name = ''):
             await ctx.send('Syntax: profile [name]')
             return
     response = requests.get(f'https://api.wynncraft.com/v2/player/{name}/stats').json()
-    await ctx.send(embed = profilebuilder.buildProfile(response), components = profilebuilder.buildComponents(response), delete_after=60.0)
+    await ctx.send(embed=profilebuilder.build_profile(response), components=profilebuilder.build_components(response), delete_after=60.0)
+
 
 @bot.event
 async def on_select_option(interaction):
-#interaction: client, user, component, custom_id, values (id der selection), component_type, message, guild, channel, interaction_id, interaction_token, responded?, deferred?
+    # interaction: client, user, component, custom_id, values (id der selection), component_type, message, guild, channel, interaction_id, interaction_token, responded?, deferred?
     name = interaction.message.components[0].components[0].options[0].value
-    classCounter = int(interaction.values[0])
+    classcounter = int(interaction.values[0])
     response = requests.get(f'https://api.wynncraft.com/v2/player/{name}/stats').json()
-    await interaction.message.edit(embed = profilebuilder.buildClass(response, classCounter), components = profilebuilder.buildComponents(response))
+    await interaction.message.edit(embed=profilebuilder.build_class(response, classcounter), components=profilebuilder.build_components(response))
     
 
 bot.run('insert token here')

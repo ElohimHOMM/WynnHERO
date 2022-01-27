@@ -4,15 +4,18 @@ from pathlib import Path
 
 data_file = Path('data/data.pkl')
 
-def readyDataSetup():
-    if os.path.exists(data_file) == False:
-        open(data_file, 'wb+')
-        sdata = {}
-        save_dict(sdata)
 
-def save_dict(dict):
+def ready_data_setup():
+    if os.path.exists(data_file) is False:
+        open(data_file, 'wb+')
+        s_data = {}
+        save_dict(s_data)
+
+
+def save_dict(c_dict):
     with open(data_file, 'wb') as f:
-        pickle.dump(dict, f, pickle.HIGHEST_PROTOCOL) 
+        pickle.dump(c_dict, f, pickle.HIGHEST_PROTOCOL)
+
 
 def load_dict():
     with open(data_file, 'rb') as f:
