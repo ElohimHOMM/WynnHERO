@@ -1,0 +1,12 @@
+.elohim-btn {
+    background-color: #922828;
+    border: solid;
+    border-radius: 2ex;
+    border-color: #ebd61e;
+    color: #ebd61e;
+}
+
+a {
+    color: inherit;
+    text-decoration: inherit;
+}
